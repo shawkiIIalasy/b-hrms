@@ -10,11 +10,6 @@ use App\Models\User;
 
 class EmployeeController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
     public function index()
     {
         $this->authorize('employee-index');
@@ -41,12 +36,6 @@ class EmployeeController extends ApiController
         return new EmployeeResource($employee);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return EmployeeResource
-     */
     public function show($id)
     {
         $this->authorize('employee-show');
@@ -56,13 +45,6 @@ class EmployeeController extends ApiController
         return new EmployeeResource($employee);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return EmployeeResource
-     */
     public function update(UpdateEmployeeRequest $request, $id)
     {
         $this->authorize('employee-update');
@@ -74,18 +56,11 @@ class EmployeeController extends ApiController
         return new EmployeeResource($employee);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $this->authorize('employee-delete');
 
     }
-
 
     public function activate($id)
     {

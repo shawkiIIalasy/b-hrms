@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Roles;
 
 use App\Models\Role;
-use App\Models\User;
 use Illuminate\Console\Command;
 
-class UsersSuperadmin extends Command
+class Create extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'users:superadmin';
+    protected $signature = 'role:create {name} {slug}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create user as super admin';
+    protected $description = 'Create new role.';
 
     /**
      * Create a new command instance.
@@ -39,14 +38,12 @@ class UsersSuperadmin extends Command
      */
     public function handle()
     {
-        $role = Role::where('slug', 'employee')->first();
-
-        $user = User::create([
-            'email' => 'employee@admin.com',
-            'password' => 'Abcdef123'
+        Role::create([
+            'name' => $this->argument('name'),
+            'slug' => $this->argument('slug')
         ]);
 
-        $user->assignRole([$role->id]);
+        $this->alert('Role created successfully.');
         return 0;
     }
 }
