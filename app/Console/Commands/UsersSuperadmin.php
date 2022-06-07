@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -38,10 +39,14 @@ class UsersSuperadmin extends Command
      */
     public function handle()
     {
-        User::create([
+        $role = Role::where('slug', 'admin')->first();
+
+        $user = User::create([
             'email' => 'superadmin@admin.com',
             'password' => 'Abcdef123'
         ]);
+
+        $user->assignRole([$role->id]);
         return 0;
     }
 }
