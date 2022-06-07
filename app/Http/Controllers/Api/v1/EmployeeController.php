@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class EmployeeController extends ApiController
 {
@@ -20,6 +17,8 @@ class EmployeeController extends ApiController
      */
     public function index()
     {
+        $this->authorize('employee-index');
+
         $employees = Employee::query()->paginate();
 
         return EmployeeResource::collection($employees);
@@ -27,6 +26,8 @@ class EmployeeController extends ApiController
 
     public function store(StoreEmployeeRequest $request)
     {
+        $this->authorize('employee-store');
+
         $user = User::create(['email' => $request->email, 'password' => $request->password]);
 
         $employee = Employee::create([
@@ -43,11 +44,13 @@ class EmployeeController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return EmployeeResource
      */
     public function show($id)
     {
+        $this->authorize('employee-show');
+
         $employee = Employee::findOrFail($id);
 
         return new EmployeeResource($employee);
@@ -56,12 +59,14 @@ class EmployeeController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return EmployeeResource
      */
-    public function update( UpdateEmployeeRequest $request, $id)
+    public function update(UpdateEmployeeRequest $request, $id)
     {
+        $this->authorize('employee-update');
+
         $employee = Employee::findOrFail($id);
 
         $employee->update($request->validated());
@@ -72,16 +77,20 @@ class EmployeeController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $this->authorize('employee-delete');
+
     }
 
 
-    public function activate($id) {
+    public function activate($id)
+    {
+        $this->authorize('employee-activate');
+
         $employee = Employee::findOrFail($id);
 
         $employee->active = true;
@@ -91,7 +100,10 @@ class EmployeeController extends ApiController
         return new EmployeeResource($employee);
     }
 
-    public function deactivate($id) {
+    public function deactivate($id)
+    {
+        $this->authorize('employee-deactivate');
+
         $employee = Employee::findOrFail($id);
 
         $employee->active = false;

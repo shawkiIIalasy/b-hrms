@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Traits\ApiResponder;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
@@ -48,6 +49,10 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof ModelNotFoundException) {
             return $this->error('Not Found', Response::HTTP_NOT_FOUND);
+        }
+
+        if ($e instanceof AuthorizationException) {
+            return $this->error('Unauthorized', Response::HTTP_UNAUTHORIZED);
         }
 
         return parent::render($request, $e);

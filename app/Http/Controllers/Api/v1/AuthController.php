@@ -19,7 +19,6 @@ class AuthController extends ApiController
 
         $user = User::findOrFail(auth()->user()->id);
 
-        info($user->hasRole('admin'));
         return $this->success(['access_token' => $user->createToken('access_token')->plainTextToken], 'Authenticated successfully.');
     }
 

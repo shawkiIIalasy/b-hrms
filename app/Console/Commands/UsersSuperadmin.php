@@ -39,10 +39,10 @@ class UsersSuperadmin extends Command
      */
     public function handle()
     {
-        $role = Role::where('slug', 'admin')->first();
+        $role = Role::where('slug', 'employee')->first();
 
         $user = User::create([
-            'email' => 'superadmin@admin.com',
+            'email' => 'employee@admin.com',
             'password' => 'Abcdef123'
         ]);
 
