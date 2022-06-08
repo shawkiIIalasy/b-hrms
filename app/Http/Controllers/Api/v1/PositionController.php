@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Models\Position;
+use App\Enums\PermissionsEnum;
+use App\Http\Resources\PositionResource;
 use App\Http\Requests\StorePositionRequest;
 use App\Http\Requests\UpdatePositionRequest;
-use App\Http\Resources\PositionResource;
-use App\Models\Position;
 
 class PositionController extends ApiController
 {
     public function index()
     {
-        $this->authorize('position-index');
+        $this->authorize(PermissionsEnum::POSITION_INDEX->value);
 
         $positions = Position::query()->paginate();
 
@@ -20,7 +21,7 @@ class PositionController extends ApiController
 
     public function store(StorePositionRequest $request)
     {
-        $this->authorize('position-store');
+        $this->authorize(PermissionsEnum::POSITION_STORE->value);
 
         $position = Position::create($request->validated());
 
@@ -29,7 +30,7 @@ class PositionController extends ApiController
 
     public function show($id)
     {
-        $this->authorize('position-show');
+        $this->authorize(PermissionsEnum::POSITION_SHOW->value);
 
         $position = Position::findOrFail($id);
 
@@ -38,7 +39,7 @@ class PositionController extends ApiController
 
     public function update(UpdatePositionRequest $request, $id)
     {
-        $this->authorize('position-update');
+        $this->authorize(PermissionsEnum::POSITION_UPDATE->value);
 
         $position = Position::findOrFail($id);
 
@@ -49,7 +50,6 @@ class PositionController extends ApiController
 
     public function destroy($id)
     {
-        $this->authorize('position-delete');
-
+        $this->authorize(PermissionsEnum::POSITION_DESTROY->value);
     }
 }

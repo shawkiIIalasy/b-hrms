@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Models\Country;
+use App\Enums\PermissionsEnum;
+use App\Http\Resources\CountryResource;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
-use App\Http\Resources\CountryResource;
-use App\Models\Country;
 
 class CountryController extends ApiController
 {
     public function index()
     {
-        $this->authorize('country-index');
+        $this->authorize(PermissionsEnum::COUNTRY_INDEX->value);
 
         $countries = Country::query()->paginate();
 
@@ -20,7 +21,7 @@ class CountryController extends ApiController
 
     public function store(StoreCountryRequest $request)
     {
-        $this->authorize('country-store');
+        $this->authorize(PermissionsEnum::COUNTRY_STORE->value);
 
         $country = Country::create($request->validated());
 
@@ -29,7 +30,7 @@ class CountryController extends ApiController
 
     public function show($id)
     {
-        $this->authorize('country-show');
+        $this->authorize(PermissionsEnum::COUNTRY_SHOW->value);
 
         $country = Country::findOrFail($id);
 
@@ -38,7 +39,7 @@ class CountryController extends ApiController
 
     public function update(UpdateCountryRequest $request, $id)
     {
-        $this->authorize('country-update');
+        $this->authorize(PermissionsEnum::COUNTRY_UPDATE->value);
 
         $country = Country::findOrFail($id);
 
@@ -49,7 +50,6 @@ class CountryController extends ApiController
 
     public function destroy($id)
     {
-        $this->authorize('country-delete');
-
+        $this->authorize(PermissionsEnum::COUNTRY_DESTROY->value);
     }
 }

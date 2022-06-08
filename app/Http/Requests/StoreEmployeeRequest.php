@@ -30,7 +30,8 @@ class StoreEmployeeRequest extends FormRequest
             'password' => 'required|between:2,255',
             'phone' => 'required|between:2,255',
             'country_id' => 'required|exists:countries,id',
-            'position_id' => 'required|exists:positions,id'
+            'position_id' => 'required|exists:positions,id',
+            'role_id' => 'required|exists:roles,id',
         ];
     }
 }

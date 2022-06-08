@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Models\User;
+use App\Models\Employee;
+use App\Enums\PermissionsEnum;
+use App\Http\Resources\EmployeeResource;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
-use App\Http\Resources\EmployeeResource;
-use App\Models\Employee;
-use App\Models\User;
 
 class EmployeeController extends ApiController
 {
     public function index()
     {
-        $this->authorize('employee-index');
+        $this->authorize(PermissionsEnum::EMPLOYEE_INDEX->value);
 
         $employees = Employee::query()->paginate();
 
@@ -21,9 +22,11 @@ class EmployeeController extends ApiController
 
     public function store(StoreEmployeeRequest $request)
     {
-        $this->authorize('employee-store');
+        $this->authorize(PermissionsEnum::EMPLOYEE_STORE->value);
 
         $user = User::create(['email' => $request->email, 'password' => $request->password]);
+
+        $user->assignRole([$request->role_id]);
 
         $employee = Employee::create([
             'first_name' => $request->first_name,
@@ -31,7 +34,7 @@ class EmployeeController extends ApiController
             'phone' => $request->phone,
             'user_id' => $user->id,
             'country_id' => $request->country_id,
-            'position_id' => $request->position_id
+            'position_id' => $request->position_id,
         ]);
 
         return new EmployeeResource($employee);
@@ -39,7 +42,7 @@ class EmployeeController extends ApiController
 
     public function show($id)
     {
-        $this->authorize('employee-show');
+        $this->authorize(PermissionsEnum::EMPLOYEE_SHOW->value);
 
         $employee = Employee::findOrFail($id);
 
@@ -48,7 +51,7 @@ class EmployeeController extends ApiController
 
     public function update(UpdateEmployeeRequest $request, $id)
     {
-        $this->authorize('employee-update');
+        $this->authorize(PermissionsEnum::EMPLOYEE_UPDATE->value);
 
         $employee = Employee::findOrFail($id);
 
@@ -59,13 +62,12 @@ class EmployeeController extends ApiController
 
     public function destroy($id)
     {
-        $this->authorize('employee-delete');
-
+        $this->authorize(PermissionsEnum::EMPLOYEE_DESTROY->value);
     }
 
     public function activate($id)
     {
-        $this->authorize('employee-activate');
+        $this->authorize(PermissionsEnum::EMPLOYEE_ACTIVATE->value);
 
         $employee = Employee::findOrFail($id);
 
@@ -78,7 +80,7 @@ class EmployeeController extends ApiController
 
     public function deactivate($id)
     {
-        $this->authorize('employee-deactivate');
+        $this->authorize(PermissionsEnum::EMPLOYEE_DEACTIVATE->value);
 
         $employee = Employee::findOrFail($id);
 

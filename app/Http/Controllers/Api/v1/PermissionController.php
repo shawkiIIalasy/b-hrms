@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Models\Permission;
+use App\Enums\PermissionsEnum;
 use App\Http\Resources\PermissionResource;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
@@ -11,7 +12,7 @@ class PermissionController extends ApiController
 {
     public function index()
     {
-        $this->authorize('permission-index');
+        $this->authorize(PermissionsEnum::PERMISSION_INDEX->value);
 
         $permissions = Permission::query()->paginate();
 
@@ -20,7 +21,7 @@ class PermissionController extends ApiController
 
     public function store(StorePermissionRequest $request)
     {
-        $this->authorize('permission-store');
+        $this->authorize(PermissionsEnum::PERMISSION_STORE->value);
 
         $permission = Permission::create($request->validated());
 
@@ -29,7 +30,7 @@ class PermissionController extends ApiController
 
     public function show($id)
     {
-        $this->authorize('permission-show');
+        $this->authorize(PermissionsEnum::PERMISSION_SHOW->value);
 
         $permission = Permission::findOrFail($id);
 
@@ -38,7 +39,7 @@ class PermissionController extends ApiController
 
     public function update(UpdatePermissionRequest $request, $id)
     {
-        $this->authorize('permission-update');
+        $this->authorize(PermissionsEnum::PERMISSION_UPDATE->value);
 
         $permission = Permission::findOrFail($id);
 
@@ -49,6 +50,6 @@ class PermissionController extends ApiController
 
     public function destroy($id)
     {
-        $this->authorize('permission-delete');
+        $this->authorize(PermissionsEnum::PERMISSION_DESTROY->value);
     }
 }

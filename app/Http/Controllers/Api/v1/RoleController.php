@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Requests\StorePositionRequest;
-use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdatePositionRequest;
-use App\Http\Requests\UpdateRoleRequest;
-use App\Http\Resources\RoleResource;
 use App\Models\Role;
+use App\Enums\PermissionsEnum;
+use App\Http\Resources\RoleResource;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
+use App\Http\Requests\StorePositionRequest;
+use App\Http\Requests\UpdatePositionRequest;
 
 class RoleController extends ApiController
 {
     public function index()
     {
-        $this->authorize('role-index');
+        $this->authorize(PermissionsEnum::ROLE_INDEX->value);
 
         $roles = Role::query()->paginate();
 
@@ -22,7 +23,7 @@ class RoleController extends ApiController
 
     public function store(StoreRoleRequest $request)
     {
-        $this->authorize('role-store');
+        $this->authorize(PermissionsEnum::ROLE_STORE->value);
 
         $role = Role::create($request->validated());
 
@@ -31,7 +32,7 @@ class RoleController extends ApiController
 
     public function show($id)
     {
-        $this->authorize('role-show');
+        $this->authorize(PermissionsEnum::ROLE_SHOW->value);
 
         $role = Role::findOrFail($id);
 
@@ -40,7 +41,7 @@ class RoleController extends ApiController
 
     public function update(UpdateRoleRequest $request, $id)
     {
-        $this->authorize('role-update');
+        $this->authorize(PermissionsEnum::ROLE_UPDATE->value);
 
         $role = Role::findOrFail($id);
 
@@ -51,7 +52,6 @@ class RoleController extends ApiController
 
     public function destroy($id)
     {
-        $this->authorize('role-delete');
-
+        $this->authorize(PermissionsEnum::ROLE_DESTROY->value);
     }
 }
