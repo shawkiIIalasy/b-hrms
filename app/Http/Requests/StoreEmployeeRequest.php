@@ -28,6 +28,7 @@ class StoreEmployeeRequest extends FormRequest
             'last_name' => 'required|between:2,255',
             'email' => 'required|email|unique:users|between:2,255',
             'password' => 'required|between:2,255',
+            'phone' => 'required|between:2,255',
             'country_id' => 'required|exists:countries,id',
             'position_id' => 'required|exists:positions,id'
         ];

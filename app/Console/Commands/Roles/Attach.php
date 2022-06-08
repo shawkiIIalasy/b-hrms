@@ -20,7 +20,7 @@ class Attach extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Attach permission to role';
 
     /**
      * Create a new command instance.

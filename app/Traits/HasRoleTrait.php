@@ -9,12 +9,12 @@ trait HasRoleTrait
 {
 
     public function assignRole($roles) {
+        $this->roles()->detach();
         $this->roles()->attach($roles);
     }
 
     public function hasRole(...$roles)
     {
-
         foreach ($roles as $role) {
             if ($this->roles->contains('slug', $role)) {
                 return true;

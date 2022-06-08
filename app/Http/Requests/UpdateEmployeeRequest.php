@@ -26,6 +26,7 @@ use Illuminate\Foundation\Http\FormRequest;
         return [
             'first_name' => 'required|between:2,255',
             'last_name' => 'required|between:2,255',
+            'phone' => 'required|between:2,255',
             'country_id' => 'required|exists:countries,id',
             'position_id' => 'required|exists:positions,id'
         ];

@@ -28,6 +28,7 @@ class EmployeeController extends ApiController
         $employee = Employee::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'phone' => $request->phone,
             'user_id' => $user->id,
             'country_id' => $request->country_id,
             'position_id' => $request->position_id
