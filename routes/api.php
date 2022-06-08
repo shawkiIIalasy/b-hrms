@@ -26,6 +26,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::patch('deactivate', [\App\Http\Controllers\Api\v1\EmployeeController::class, 'deactivate']);
     });
 
+    Route::apiResource('roles', \App\Http\Controllers\Api\v1\RoleController::class);
+    Route::apiResource('permissions', \App\Http\Controllers\Api\v1\PermissionController::class);
+    Route::apiResource('countries', \App\Http\Controllers\Api\v1\CountryController::class);
+    Route::apiResource('positions', \App\Http\Controllers\Api\v1\PositionController::class);
+
     Route::post('logout', [\App\Http\Controllers\Api\v1\AuthController::class, 'logout']);
 });
 
