@@ -1,66 +1,165 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## About BHRMS
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+BHRMS: is a back-end RESTFull API project , that interact with UI and UX to deliver HR Management system.
+ 
+## Technology stack:
+    * PHP 8.1
+    * Laravel 9 framework
+    * MySql 8
 
-## About Laravel
+## Setup
+* Run Composer install
+  * `composer install`
+* Copy environment file
+  * `cp .env.example .env`
+* Generate key
+  * `php artisan key:generate`
+* Add Database credentials in env file
+* Run permissions sync
+  * `php artisan permissions:sync`
+* Run superadmin create (to create super admin account that have all permissions)
+  * `php artisan superadmin:create`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Task Description:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**First:** The Employee API will be used by users (Employees) to perform the following tasks:
+    
+    ● Update contact information.
+    
+    Every User (Employee) will have their own contact details and job title, and status field to
+    indicate if their account is active or not.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Second:** HR Manager APIs will be used to perform the following tasks:
 
-## Learning Laravel
+    ● List employees.
+    ● Add employees.
+    ● Deactivate an employee.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Actual Result: 
+* You can have multiple roles and permissions not only describe above.
+* You can activate employee after deactivate it.
 
-## Laravel Sponsors
+## ER Diagram
+![](public/b-hrms.png)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+* Every employee should be a user.
+* Every employee may have different permissions depends on the role and permission they have.
+* HR manager can set up all countries and positions to be selected by employee.
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+* With the above schema we can set up different roles and permissions.
 
-## Contributing
+Example:if we want to create an HR Manager role, so we need to create a role and then specify the permissions like can list employee and can create employee, etc..
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## APIs Structure:
 
-## Code of Conduct
+You can find `POSTMAN` collection attached in this repo `BHRMS.postman_collection.json` 
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Auth: 
 
-## Security Vulnerabilities
+* Login: `/login` `POST`
+  * to login to portal with access conditional, this api will return an `Bearer Token` to use it with below APIs.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Employees:
+* Index : `/employees` `GET`
+  * To list all employees.
 
-## License
+* Show: `/employees/{id}` `GET`
+  * To get employee details.
+  
+* Create: `/employees` `POST`
+  * To create an employee.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# b-hrms
-# b-hrms
+* Update: `/employess/{id}` `PUT`
+  * To update employee details.
+
+* Activate: `/employees/{employee}/actions/activate` `PATCH`
+  * To activate employee profile.
+
+* Deactivate: `/employees/{employee}/actions/deactivate` `PATCH`
+  * To deactivate employee profile.
+
+
+### Roles
+
+* Index : `/roles` `GET`
+    * To list all roles.
+
+* Show: `/roles/{id}` `GET`
+    * To get role details.
+
+* Create: `/roles` `POST`
+    * To create a role.
+
+* Update: `/roles/{id}` `PUT`
+    * To update role details.
+
+
+### Permissions
+
+* Index : `/permissions` `GET`
+    * To list all permissions.
+
+* Show: `/permissions/{id}` `GET`
+    * To get permission details.
+
+* Create: `/permissions` `POST`
+    * To create a permission.
+
+* Update: `/permissions/{id}` `PUT`
+    * To update permission details.
+
+
+### Countries
+
+* Index : `/countries` `GET`
+    * To list all countries.
+
+* Show: `/countries/{id}` `GET`
+    * To get country details.
+
+* Create: `/countries` `POST`
+    * To create a country.
+
+* Update: `/countries/{id}` `PUT`
+    * To update country details.
+
+### Positions
+
+* Index : `/positions` `GET`
+    * To list all positions.
+
+* Show: `/positions/{id}` `GET`
+    * To get position details.
+
+* Create: `/positions` `POST`
+    * To create a position.
+
+* Update: `/positions/{id}` `PUT`
+    * To update position details.
+
+
+## Commands:
+
+* `superadmin:create`
+    * create super admin that have all permissions.
+
+* `php artisan permissions:sync`
+  * to sync all permissions on the platform.
+
+* `permissions:create {name} {slug}`
+    * create permission.
+
+* `php artisan role:assign {role} {employee}`
+  * to assign role for specific employee.
+
+* `php artisan role:attach {slug} {permission_slug}`
+    * attach permission to role.
+
+* `php artisan role:create {name} {slug}`
+    * create role.
+
+## Unit Testing:
+
+Upcoming
